@@ -1,0 +1,15 @@
+version: '3' # docker compose version
+services:
+  web:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/home/node/code # bind mount current directory to /home/node/code
+      - /home/node/code/node_modules # keep node_modules deps inside container
+    links:
+      - db # waits for db to build before starting
+    environment:
+      MONGO_CONNECTION_STRING: 'mongodb://db:27017'
+  db:
+    image: mongo:3 # real simple, just run the docker hub image
